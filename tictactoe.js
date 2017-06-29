@@ -9,6 +9,25 @@ function checkForGameOver() {
     }
 }
 
+/*
+Function to check if all values of array are equal. 
+Function used based on examples found here: https://stackoverflow.com/questions/14832603/check-if-all-values-of-array-are-equal
+*/
+function check(array) {
+    return array.reduce(function(position, letter) {
+        // Check for empty placements
+        if (position === ' ') {
+            return false;
+        } else {
+            // Set winner
+            winner = array[0];
+            // Set to false if equal
+            return (position === letter) ? position:false;
+        }
+        // Compare with first item in array
+    }) === array[0];
+}
+
 // Check input values from player
 function testInput(position, letter) {
     // If it's an invalid number
@@ -28,6 +47,27 @@ function testInput(position, letter) {
     // Handle unexpected inputs
     } else {
         console.log('Please enter a valid letter! (X or O)');
+    }
+}
+
+// Find the winner
+function findWinner() {
+    if (
+        // Check rows
+        check([placement[0], placement[1], placement[2]]) ||
+        check([placement[3], placement[4], placement[5]]) ||
+        check([placement[6], placement[7], placement[8]]) ||
+
+        // Check columns
+        check([placement[0], placement[3], placement[6]]) ||
+        check([placement[1], placement[4], placement[7]]) ||
+        check([placement[2], placement[5], placement[8]]) ||
+
+        // Check diagonals
+        check([placement[0], placement[4], placement[8]]) ||
+        check([placement[2], placement[4], placement[6]])
+    ) {
+        return true;
     }
 }
 
@@ -81,6 +121,14 @@ function place(position, letter) {
     // Draw board again to next turn
         drawBoard();
     }
+}
+
+function startNewGame() {
+    // Reset variables and draw new board
+    placement = [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '];
+    turnCount = 1;
+    gameOver = false;
+    drawBoard(true);
 }
 
 // Start the game!
